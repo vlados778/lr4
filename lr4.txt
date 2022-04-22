@@ -1,0 +1,50 @@
+#include "DigitalOut.h"
+#include "InterruptIn.h"
+#include "PinNames.h"
+#include "ThisThread.h"
+#include "mbed.h"
+
+DigitalOut oled1(LED1);
+InterruptIn ibutton(BUTTON1);
+static auto sleep_time =1000ms;
+static auto pressing_a_button=0;
+
+void released()
+{
+
+}
+
+void pressed()
+{
+    
+    if (pressing_a_button<5)
+        pressing_a_button+=1;
+        else
+            pressing_a_button=0;
+
+  
+}
+int main()
+{
+    ibutton.fall(&released);
+    ibutton.rise(&pressed);
+    while (true) {
+        if (pressing_a_button==0)
+        {
+            oled1=!oled1;
+            ThisThread::sleep_for(100ms);
+        }
+        if (pressing_a_button==2)
+        {
+            oled1=!oled1;
+            ThisThread::sleep_for(500ms);
+        }
+        if (pressing_a_button==4)
+        {
+            oled1=!oled1;
+            ThisThread::sleep_for(1000ms);
+        }
+    }
+}
+
+
